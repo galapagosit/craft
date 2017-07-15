@@ -29,7 +29,9 @@ func main() {
 	}
 	e.Renderer = t
 
-	e.Static("/static", "assets")
+	if e.Debug {
+		e.Static("/static", "assets")
+	}
 
 	e.GET("/", func(c echo.Context) error {
 		return c.Render(http.StatusOK, "index", "World")
