@@ -3,10 +3,10 @@ package main
 import (
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
-	"github.com/labstack/gommon/log"
 	"html/template"
 	"io"
 	"net/http"
+	"os"
 )
 
 type Template struct {
@@ -19,8 +19,8 @@ func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Con
 
 func main() {
 	e := echo.New()
+	e.Debug = os.Getenv("DEBUG") == "1";
 
-	e.Logger.SetLevel(log.DEBUG)
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
