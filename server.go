@@ -3,6 +3,7 @@ package main
 import (
 	"./handlers"
 	"./models"
+	"./middlewares"
 	"fmt"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
@@ -50,8 +51,6 @@ func setRoutes(e *echo.Echo) {
 
 	e.POST("/users", handlers.CreateUser)
 	e.GET("/users/:id", handlers.GetUser)
-	e.PUT("/users/:id", handlers.UpdateUser)
-	e.DELETE("/users/:id", handlers.DeleteUser)
 }
 
 func main() {
@@ -69,6 +68,7 @@ func main() {
 
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
+	e.Use(middlewares.DbSession)
 
 	if e.Debug {
 		e.Static("/static", "assets")
