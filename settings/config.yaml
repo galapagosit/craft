@@ -1,0 +1,2 @@
+db:
+  args: host=localhost user=postgres dbname=craft sslmode=disable password=
