@@ -2,19 +2,20 @@ package main
 
 import (
 	"./handlers"
-	"./models"
 	"./middlewares"
+	"./models"
 	"fmt"
+	"github.com/go-playground/validator"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 	"github.com/spf13/viper"
+	"github.com/ipfans/echo-session"
 	"html/template"
 	"io"
 	"net/http"
 	"os"
-	"github.com/go-playground/validator"
 )
 
 func setConfigs() {
@@ -25,7 +26,6 @@ func setConfigs() {
 		panic(fmt.Errorf("Fatal error config file: %s \n", err))
 	}
 }
-
 
 func setModels() {
 	db, err := gorm.Open("postgres", viper.GetString("db.args"))
@@ -40,6 +40,9 @@ func setModels() {
 
 func setRoutes(e *echo.Echo) {
 	e.GET("/", func(c echo.Context) error {
+		session := session.Default(c)
+		session.Set("count", "100")
+		session.Save()
 		return c.Render(http.StatusOK, "index", "World")
 	})
 
@@ -80,6 +83,13 @@ func main() {
 
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
+
+	store, err := session.NewPostgresStore(viper.GetString("db.args"), []byte("secret"))
+	if err != nil {
+		panic(err)
+	}
+	e.Use(session.Sessions("GSESSION", store))
+
 	e.Use(middlewares.DbSession)
 
 	if e.Debug {
