@@ -84,13 +84,14 @@ func main() {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
-	store, err := session.NewPostgresStore(viper.GetString("db.args"), []byte("secret"))
+	store, err := session.NewPostgresStore(viper.GetString("db.args"), []byte("uekjdakjnc"))
 	if err != nil {
 		panic(err)
 	}
 	e.Use(session.Sessions("GSESSION", store))
 
 	e.Use(middlewares.DbSession)
+	e.Use(middlewares.Auth)
 
 	if e.Debug {
 		e.Static("/dist", "front/dist")
