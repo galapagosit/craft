@@ -6,6 +6,6 @@ import (
 
 type User struct {
 	gorm.Model
-	Name string
-	Password string
+	Email string `form:"email" json:"email" validate:"required,email"`
+	Password string `form:"password" validate:"required"`
 }

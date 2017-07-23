@@ -14,6 +14,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"github.com/go-playground/validator"
 )
 
 func setConfigs() {
@@ -25,13 +26,6 @@ func setConfigs() {
 	}
 }
 
-type Template struct {
-	templates *template.Template
-}
-
-func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
-	return t.templates.ExecuteTemplate(w, name, data)
-}
 
 func setModels() {
 	db, err := gorm.Open("postgres", viper.GetString("db.args"))
@@ -53,6 +47,22 @@ func setRoutes(e *echo.Echo) {
 	e.GET("/users/:id", handlers.GetUser)
 }
 
+type CustomValidator struct {
+	validator *validator.Validate
+}
+
+func (cv *CustomValidator) Validate(i interface{}) error {
+	return cv.validator.Struct(i)
+}
+
+type Template struct {
+	templates *template.Template
+}
+
+func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
+	return t.templates.ExecuteTemplate(w, name, data)
+}
+
 func main() {
 	e := echo.New()
 	e.Debug = os.Getenv("DEBUG") == "1"
@@ -65,6 +75,8 @@ func main() {
 		templates: template.Must(template.ParseGlob("public/views/*.html")),
 	}
 	e.Renderer = t
+
+	e.Validator = &CustomValidator{validator: validator.New()}
 
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
