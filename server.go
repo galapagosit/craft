@@ -72,7 +72,7 @@ func main() {
 	setRoutes(e)
 
 	t := &Template{
-		templates: template.Must(template.ParseGlob("public/views/*.html")),
+		templates: template.Must(template.ParseGlob("front/*.html")),
 	}
 	e.Renderer = t
 
@@ -83,7 +83,8 @@ func main() {
 	e.Use(middlewares.DbSession)
 
 	if e.Debug {
-		e.Static("/static", "assets")
+		e.Static("/dist", "front/dist")
+		e.Static("/static", "front/static")
 	}
 
 	e.Logger.Fatal(e.Start(":1323"))
