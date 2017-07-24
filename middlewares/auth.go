@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-var excludes = []string{"/login"}
+var excludes = []string{"/register", "/login"}
 
 func contains(slice []string, item string) bool {
 	set := make(map[string]struct{}, len(slice))
