@@ -46,7 +46,7 @@ func setRoutes(e *echo.Echo) {
 		return c.Render(http.StatusOK, "index", "World")
 	})
 
-	e.POST("/register", handlers.CreateUser)
+	e.POST("/register", handlers.Register)
 	e.GET("/login", handlers.Login)
 	e.POST("/login", handlers.Login)
 }

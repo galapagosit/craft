@@ -1,19 +1,20 @@
 package handlers
 
 import (
-	"github.com/labstack/echo"
-	"net/http"
 	"../middlewares"
 	"github.com/galapagosit/craft/models"
+	"github.com/ipfans/echo-session"
+	"github.com/labstack/echo"
 	"golang.org/x/crypto/bcrypt"
+	"net/http"
 )
 
 type userForm struct {
-	Email string `form:"email" validate:"required,email"`
+	Email    string `form:"email" validate:"required,email"`
 	Password string `form:"password" validate:"required"`
 }
 
-func CreateUser(c echo.Context) (err error){
+func Register(c echo.Context) (err error) {
 	cc := c.(*middlewares.CustomContext)
 	userForm := new(userForm)
 	if err = c.Bind(userForm); err != nil {
@@ -31,9 +32,30 @@ func CreateUser(c echo.Context) (err error){
 	return c.JSON(http.StatusCreated, u)
 }
 
-func Login(c echo.Context) error {
+func Login(c echo.Context) (err error) {
 	cc := c.(*middlewares.CustomContext)
-	var user models.User
-	cc.Db.First(&user, c.Param("id"))
-	return c.JSON(http.StatusOK, user)
+	session := session.Default(c)
+	if c.Request().Method == "POST" {
+		userForm := new(userForm)
+		if err = c.Bind(userForm); err != nil {
+			return
+		}
+		if err = c.Validate(userForm); err != nil {
+			return
+		}
+
+		var user models.User
+		cc.Db.First(&user, &models.User{Email: userForm.Email})
+
+		err = bcrypt.CompareHashAndPassword([]byte(user.HashedPassword), []byte(userForm.Password))
+		if err != nil {
+			return c.Render(http.StatusOK, "login", "World")
+		} else {
+			session.Set("is_login", true)
+			session.Save()
+			return c.Redirect(http.StatusMovedPermanently, "/")
+		}
+	} else {
+		return c.Render(http.StatusOK, "login", "World")
+	}
 }
