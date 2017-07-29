@@ -9,34 +9,50 @@ import (
 	"net/http"
 )
 
-type userForm struct {
+type UserForm struct {
 	Email    string `form:"email" validate:"required,email"`
 	Password string `form:"password" validate:"required"`
 }
 
+type RegisterForm struct {
+	UserForm
+	PasswordConfirm string `form:"password_confirm" validate:"required"`
+}
+
 func Register(c echo.Context) (err error) {
 	cc := c.(*middlewares.CustomContext)
-	userForm := new(userForm)
-	if err = c.Bind(userForm); err != nil {
-		return
-	}
-	if err = c.Validate(userForm); err != nil {
-		return
-	}
+	session := session.Default(c)
+	if c.Request().Method == "POST" {
+		registerForm := new(RegisterForm)
+		if err = c.Bind(registerForm); err != nil {
+			return
+		}
+		if err = c.Validate(registerForm); err != nil {
+			return
+		}
 
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(userForm.Password), bcrypt.DefaultCost)
-	if err != nil {
-		panic(err)
+		if registerForm.Password != registerForm.PasswordConfirm {
+			return
+		}
+
+		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(registerForm.Password), bcrypt.DefaultCost)
+		if err != nil {
+			panic(err)
+		}
+		cc.Db.Create(&models.User{Email: registerForm.Email, HashedPassword: string(hashedPassword)})
+		session.Set("is_login", true)
+		session.Save()
+		return c.Redirect(http.StatusMovedPermanently, "/")
+	} else {
+		return c.Render(http.StatusOK, "register", nil)
 	}
-	u := cc.Db.Create(&models.User{Email: userForm.Email, HashedPassword: string(hashedPassword)})
-	return c.JSON(http.StatusCreated, u)
 }
 
 func Login(c echo.Context) (err error) {
 	cc := c.(*middlewares.CustomContext)
 	session := session.Default(c)
 	if c.Request().Method == "POST" {
-		userForm := new(userForm)
+		userForm := new(UserForm)
 		if err = c.Bind(userForm); err != nil {
 			return
 		}
@@ -62,4 +78,11 @@ func Login(c echo.Context) (err error) {
 	} else {
 		return c.Render(http.StatusOK, "login", nil)
 	}
+}
+
+func Logout(c echo.Context) (err error) {
+	session := session.Default(c)
+	session.Delete("is_login")
+	session.Save()
+	return c.Redirect(http.StatusMovedPermanently, "/login")
 }

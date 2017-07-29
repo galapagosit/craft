@@ -43,9 +43,11 @@ func setRoutes(e *echo.Echo) {
 		return c.Render(http.StatusOK, "index", "World")
 	})
 
+	e.GET("/register", handlers.Register)
 	e.POST("/register", handlers.Register)
 	e.GET("/login", handlers.Login)
 	e.POST("/login", handlers.Login)
+	e.GET("/logout", handlers.Logout)
 }
 
 type CustomValidator struct {

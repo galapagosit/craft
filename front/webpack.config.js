@@ -4,6 +4,7 @@ var webpack = require('webpack')
 module.exports = {
   entry: {
     index: './src/index.js',
+    register: './src/register.js',
     login: './src/login.js',
   },
   output: {

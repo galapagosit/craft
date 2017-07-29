@@ -1,6 +1,6 @@
 <template>
   <div id="formWrapper">
-    <form method="POST" action="/login">
+    <form method="POST" action="/register">
 
     <div id="form">
       <div class="logo">
@@ -58,16 +58,13 @@
       <div class="form-item">
         <p class="formLabel">Password</p>
         <input type="password" name="password" id="password" class="form-style"/>
-        <!-- <div class="pw-view"><i class="fa fa-eye"></i></div> -->
-        <p><a href="#">
-          <small>Forgot Password ?</small>
-        </a></p>
       </div>
+			<div class="form-item">
+				<p class="formLabel">PasswordConfirm</p>
+				<input type="password" name="password_confirm" id="password_confirm" class="form-style"/>
+			</div>
       <div class="form-item">
-        <p class="pull-left"><a href="/register">
-          <small>Register</small>
-        </a></p>
-        <input type="submit" class="login pull-right" value="Log In">
+        <input type="submit" class="login pull-right" value="Register">
         <div class="clear-fix"></div>
       </div>
     </div>
