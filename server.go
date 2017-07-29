@@ -40,9 +40,6 @@ func setModels() {
 
 func setRoutes(e *echo.Echo) {
 	e.GET("/", func(c echo.Context) error {
-		session := session.Default(c)
-		session.Set("count", "100")
-		session.Save()
 		return c.Render(http.StatusOK, "index", "World")
 	})
 
@@ -76,7 +73,7 @@ func main() {
 	setRoutes(e)
 
 	t := &Template{
-		templates: template.Must(template.ParseGlob("front/*.html")),
+		templates: template.Must(template.ParseGlob("templates/*.html")),
 	}
 	e.Renderer = t
 
