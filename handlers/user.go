@@ -45,17 +45,21 @@ func Login(c echo.Context) (err error) {
 		}
 
 		var user models.User
-		cc.Db.First(&user, &models.User{Email: userForm.Email})
+		var count = 0
+		cc.Db.First(&user, &models.User{Email: userForm.Email}).Count(&count)
+		if count == 0 {
+			return c.Render(http.StatusOK, "login", nil)
+		}
 
 		err = bcrypt.CompareHashAndPassword([]byte(user.HashedPassword), []byte(userForm.Password))
 		if err != nil {
-			return c.Render(http.StatusOK, "login", "World")
+			return c.Render(http.StatusOK, "login", nil)
 		} else {
 			session.Set("is_login", true)
 			session.Save()
 			return c.Redirect(http.StatusMovedPermanently, "/")
 		}
 	} else {
-		return c.Render(http.StatusOK, "login", "World")
+		return c.Render(http.StatusOK, "login", nil)
 	}
 }
