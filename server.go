@@ -12,8 +12,6 @@ import (
 	"github.com/labstack/echo/middleware"
 	"github.com/spf13/viper"
 	"github.com/ipfans/echo-session"
-	"html/template"
-	"io"
 	"net/http"
 	"os"
 )
@@ -58,14 +56,6 @@ func (cv *CustomValidator) Validate(i interface{}) error {
 	return cv.validator.Struct(i)
 }
 
-type Template struct {
-	templates *template.Template
-}
-
-func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
-	return t.templates.ExecuteTemplate(w, name, data)
-}
-
 func main() {
 	e := echo.New()
 	e.Debug = os.Getenv("DEBUG") == "1"
@@ -73,11 +63,6 @@ func main() {
 	setConfigs()
 	setModels()
 	setRoutes(e)
-
-	t := &Template{
-		templates: template.Must(template.ParseGlob("templates/*.html")),
-	}
-	e.Renderer = t
 
 	e.Validator = &CustomValidator{validator: validator.New()}
 
