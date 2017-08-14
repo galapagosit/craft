@@ -4,8 +4,12 @@ import PropTypes from 'prop-types';
 
 import { withStyles, createStyleSheet } from 'material-ui/styles';
 import BottomNavigation, { BottomNavigationButton } from 'material-ui/BottomNavigation';
+
 import RestoreIcon from 'material-ui-icons/Restore';
-import FavoriteIcon from 'material-ui-icons/Favorite';
+import AccessibilityIcon from 'material-ui-icons/Accessibility';
+import DirectionsWalkIcon from 'material-ui-icons/DirectionsWalk';
+import BugReportIcon from 'material-ui-icons/BugReport';
+import Settingscon from 'material-ui-icons/Settings';
 import LocationOnIcon from 'material-ui-icons/LocationOn';
 
 
@@ -24,10 +28,6 @@ const buttonStyle = {
 
 class FooterNavigation extends React.Component {
 
-  shouldComponentUpdate () {
-    return false
-  }
-
   state = {
     value: 0,
   };
@@ -42,10 +42,11 @@ class FooterNavigation extends React.Component {
     return (
       <div className={classes.root}>
         <BottomNavigation value={value} onChange={this.handleChange} showLabels>
-          <BottomNavigationButton label="Recents" icon={<div style={buttonStyle}><RestoreIcon /></div>} />
-          <BottomNavigationButton label="Favorites" icon={<div style={buttonStyle}><FavoriteIcon /></div>} />
-          <BottomNavigationButton label="Nearby" icon={<div style={buttonStyle}><LocationOnIcon /></div>} />
-          <BottomNavigationButton label="Nearby" icon={<div style={buttonStyle}><LocationOnIcon /></div>} />
+          <BottomNavigationButton label="Recent" icon={<div style={buttonStyle}><RestoreIcon /></div>} />
+          <BottomNavigationButton label="Posotion" icon={<div style={buttonStyle}><AccessibilityIcon /></div>} />
+          <BottomNavigationButton label="Move" icon={<div style={buttonStyle}><DirectionsWalkIcon /></div>} />
+          <BottomNavigationButton label="Issue" icon={<div style={buttonStyle}><BugReportIcon /></div>} />
+          <BottomNavigationButton label="Setting" icon={<div style={buttonStyle}><Settingscon /></div>} />
         </BottomNavigation>
       </div>
     )
