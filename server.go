@@ -41,11 +41,9 @@ func setRoutes(e *echo.Echo) {
 		return c.Render(http.StatusOK, "index", "World")
 	})
 
-	e.GET("/register", handlers.Register)
-	e.POST("/register", handlers.Register)
-	e.GET("/login", handlers.Login)
+	e.POST("/signup", handlers.Signup)
 	e.POST("/login", handlers.Login)
-	e.GET("/logout", handlers.Logout)
+	e.POST("/logout", handlers.Logout)
 }
 
 type CustomValidator struct {
@@ -68,6 +66,10 @@ func main() {
 
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"http://localhost:3000"},
+		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
+	}))
 
 	store, err := session.NewPostgresStore(viper.GetString("db.args"), []byte("uekjdakjnc"))
 	if err != nil {

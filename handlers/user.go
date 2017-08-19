@@ -7,45 +7,53 @@ import (
 	"github.com/labstack/echo"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
+	"encoding/json"
 )
 
 type UserForm struct {
-	Email    string `form:"email" validate:"required,email"`
-	Password string `form:"password" validate:"required"`
+	Email    string `form:"email" validate:"required,email" json:"email"`
+	Password string `form:"password" validate:"required" json:"password"`
 }
 
-type RegisterForm struct {
+type SignupForm struct {
 	UserForm
-	PasswordConfirm string `form:"password_confirm" validate:"required"`
+	PasswordConfirm string `form:"password_confirm" validate:"required" json:"password_confirm"`
 }
 
-func Register(c echo.Context) (err error) {
+type SignupResult struct {
+	Result string `json:"result"`
+	Error string `json:"error"`
+}
+
+func Signup(c echo.Context) (err error) {
 	cc := c.(*middlewares.CustomContext)
 	session := session.Default(c)
-	if c.Request().Method == "POST" {
-		registerForm := new(RegisterForm)
-		if err = c.Bind(registerForm); err != nil {
-			return
-		}
-		if err = c.Validate(registerForm); err != nil {
-			return
-		}
 
-		if registerForm.Password != registerForm.PasswordConfirm {
-			return
-		}
-
-		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(registerForm.Password), bcrypt.DefaultCost)
-		if err != nil {
-			panic(err)
-		}
-		cc.Db.Create(&models.User{Email: registerForm.Email, HashedPassword: string(hashedPassword)})
-		session.Set("is_login", true)
-		session.Save()
-		return c.Redirect(http.StatusMovedPermanently, "/")
-	} else {
-		return c.Render(http.StatusOK, "register", nil)
+	var signupForm SignupForm
+	decoder := json.NewDecoder(c.Request().Body)
+	if err = decoder.Decode(&signupForm); err != nil {
+		panic(err)
 	}
+
+	if err = c.Validate(signupForm); err != nil {
+		return
+	}
+
+	if signupForm.Password != signupForm.PasswordConfirm {
+		return
+	}
+
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(signupForm.Password), bcrypt.DefaultCost)
+	if err != nil {
+		panic(err)
+	}
+	cc.Db.Create(&models.User{Email: signupForm.Email, HashedPassword: string(hashedPassword)})
+	session.Set("is_login", true)
+	session.Save()
+
+	return c.JSON(http.StatusOK, SignupResult{
+		Result: "ok",
+	})
 }
 
 func Login(c echo.Context) (err error) {

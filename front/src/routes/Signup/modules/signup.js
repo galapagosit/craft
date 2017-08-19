@@ -1,15 +1,22 @@
 import fetch from 'isomorphic-fetch';
 
-export const signupAsync = () => {
+export const signupAsync = (form) => {
   return (dispatch, getState) => {
-    return fetch(`http://localhost:1323/register`).then(
-        response => response.json()
-      ).then(json =>
-        dispatch({
-          type: 'SIGNUP_ASYNC',
-          payload: json
-        })
-      )
+    return fetch(`http://localhost:1323/signup`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(form)
+    }).then(
+      response => response.json()
+    ).then(json =>
+      dispatch({
+        type: 'SIGNUP_ASYNC',
+        payload: json
+      })
+    )
   }
 }
 
@@ -21,7 +28,7 @@ export const actions = {
 // Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
-  ['SIGNUP_ASYNC']    : (state, action) => {
+  ['SIGNUP_ASYNC']: (state, action) => {
     return {...state, is_login: true}
   }
 }
@@ -32,7 +39,7 @@ const ACTION_HANDLERS = {
 const initialState = {
   is_login: false
 }
-export default function signupReducer (state = initialState, action) {
+export default function signupReducer(state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type]
 
   return handler ? handler(state, action) : state

@@ -8,10 +8,12 @@ import (
 )
 
 var excludes = []string{
-	"/static",
-	"/dist",
-	"/register",
+	"/signup",
 	"/login",
+}
+
+type Result struct {
+	Error  string `json:"error"`
 }
 
 func Auth(next echo.HandlerFunc) echo.HandlerFunc {
@@ -28,6 +30,6 @@ func Auth(next echo.HandlerFunc) echo.HandlerFunc {
 			}
 		}
 
-		return c.Redirect(http.StatusMovedPermanently, "/login")
+		return c.JSON(http.StatusOK, Result{Error: "not authorized"})
 	}
 }
