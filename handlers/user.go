@@ -7,7 +7,6 @@ import (
 	"github.com/labstack/echo"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
-	"encoding/json"
 )
 
 type UserForm struct {
@@ -29,10 +28,9 @@ func Signup(c echo.Context) (err error) {
 	cc := c.(*middlewares.CustomContext)
 	session := session.Default(c)
 
-	var signupForm SignupForm
-	decoder := json.NewDecoder(c.Request().Body)
-	if err = decoder.Decode(&signupForm); err != nil {
-		panic(err)
+	signupForm := new(SignupForm)
+	if err = c.Bind(signupForm); err != nil {
+		return
 	}
 
 	if err = c.Validate(signupForm); err != nil {
