@@ -1,5 +1,4 @@
 import React from 'react'
-import './SignupView.scss'
 import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
 import { withStyles, createStyleSheet } from 'material-ui/styles';
@@ -56,7 +55,7 @@ class SignupView extends React.Component {
           />
         </div>
         <div className={classes.root}>
-          <Button color="primary" raised>
+          <Button color="primary" onClick={event => this.props.signupAsync(this.state)} raised>
             Signup
           </Button>
         </div>

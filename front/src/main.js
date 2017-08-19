@@ -1,3 +1,4 @@
+import 'es6-promise'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import createStore from './store/createStore'
