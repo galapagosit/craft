@@ -1,9 +1,9 @@
 import fetch from 'isomorphic-fetch';
 import {browserHistory} from 'react-router'
 
-export const signupAsync = (form) => {
+export const loginAsync = (form) => {
   return (dispatch, getState) => {
-    return fetch(`${CONFIG.BASE_URL}/signup`, {
+    return fetch(`${CONFIG.BASE_URL}/login`, {
       method: 'POST',
       headers: CONFIG.COMMON_HEADERS,
       body: JSON.stringify(form)
@@ -11,23 +11,23 @@ export const signupAsync = (form) => {
       response => response.json()
     ).then(json => {
       dispatch({
-        type: 'SIGNUP_ASYNC',
+        type: 'LOGIN_ASYNC',
         payload: json
       })
-      browserHistory.push('/counter')
+      browserHistory.push('/')
     })
   }
 }
 
 export const actions = {
-  signupAsync,
+  loginAsync,
 }
 
 // ------------------------------------
 // Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
-  ['SIGNUP_ASYNC']: (state, action) => {
+  ['LOGIN_ASYNC']: (state, action) => {
     return {...state, is_login: true}
   }
 }
@@ -38,7 +38,7 @@ const ACTION_HANDLERS = {
 const initialState = {
   is_login: false
 }
-export default function signupReducer(state = initialState, action) {
+export default function loginReducer(state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type]
 
   return handler ? handler(state, action) : state

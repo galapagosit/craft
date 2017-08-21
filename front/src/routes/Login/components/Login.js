@@ -1,5 +1,4 @@
 import React from 'react'
-import './LoginView.scss'
 import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
 import { withStyles, createStyleSheet } from 'material-ui/styles';
@@ -45,7 +44,7 @@ class LoginView extends React.Component {
           />
         </div>
         <div className={classes.root}>
-          <Button color="primary" raised>
+          <Button color="primary" onClick={event => this.props.loginAsync(this.state)} raised>
             Login
           </Button>
         </div>

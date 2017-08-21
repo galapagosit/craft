@@ -1,6 +1,16 @@
-import LoginView from './components/LoginView'
+import { injectReducer } from '../../store/reducers'
 
-// Sync route definition
-export default {
-  component : LoginView
-}
+export default (store) => ({
+  path : 'login',
+  getComponent (nextState, cb) {
+    require.ensure([], (require) => {
+      const Login = require('./containers/LoginContainer').default
+      const reducer = require('./modules/login').default
+
+      injectReducer(store, { key: 'user', reducer })
+
+      cb(null, Login)
+
+    }, 'login')
+  }
+})
