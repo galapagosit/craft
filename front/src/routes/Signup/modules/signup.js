@@ -3,7 +3,7 @@ import {browserHistory} from 'react-router'
 
 export const signupAsync = (form) => {
   return (dispatch, getState) => {
-    return fetch(`http://localhost:1323/signup`, {
+    return fetch(`${CONFIG.BASE_URL}/signup`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

@@ -43,6 +43,7 @@ const config = {
       __DEV__,
       __TEST__,
       __PROD__,
+      CONFIG: JSON.stringify(require(inProject(`./config/${project.env}`))),
     }, project.globals))
   ],
 }
