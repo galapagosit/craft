@@ -3,6 +3,7 @@ import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
 import { withStyles, createStyleSheet } from 'material-ui/styles';
 import { IndexLink, Link } from 'react-router'
+import {locationChange} from '../../../store/location';
 
 
 const styleSheet = createStyleSheet((theme) => ({

@@ -1,4 +1,5 @@
 import fetch from 'isomorphic-fetch';
+import {browserHistory} from 'react-router'
 
 export const signupAsync = (form) => {
   return (dispatch, getState) => {
@@ -11,12 +12,13 @@ export const signupAsync = (form) => {
       body: JSON.stringify(form)
     }).then(
       response => response.json()
-    ).then(json =>
+    ).then(json => {
       dispatch({
         type: 'SIGNUP_ASYNC',
         payload: json
       })
-    )
+      browserHistory.push('/counter')
+    })
   }
 }
 
