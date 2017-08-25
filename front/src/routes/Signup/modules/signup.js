@@ -6,7 +6,9 @@ export const signupAsync = (form) => {
     return fetch(`${CONFIG.BASE_URL}/signup`, {
       method: 'POST',
       headers: CONFIG.COMMON_HEADERS,
-      body: JSON.stringify(form)
+      body: JSON.stringify(form),
+      mode: 'cors',
+      credentials: 'include'
     }).then(
       response => response.json()
     ).then(json => {

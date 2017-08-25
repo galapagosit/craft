@@ -10,7 +10,7 @@ import AccessibilityIcon from 'material-ui-icons/Accessibility';
 import DirectionsWalkIcon from 'material-ui-icons/DirectionsWalk';
 import BugReportIcon from 'material-ui-icons/BugReport';
 import Settingscon from 'material-ui-icons/Settings';
-import LocationOnIcon from 'material-ui-icons/LocationOn';
+import {browserHistory} from 'react-router'
 
 
 const styleSheet = createStyleSheet({
@@ -34,6 +34,17 @@ class FooterNavigation extends React.Component {
 
   handleChange = (event, value) => {
     this.setState({ value });
+    switch (value) {
+      case 0:
+        browserHistory.push('/counter')
+        break
+      case 1:
+        browserHistory.push('/position')
+        break
+      default:
+        console.log('no root');
+        break
+    }
   };
 
   render () {
@@ -43,7 +54,7 @@ class FooterNavigation extends React.Component {
       <div className={classes.root}>
         <BottomNavigation value={value} onChange={this.handleChange} showLabels>
           <BottomNavigationButton label="Recent" icon={<div style={buttonStyle}><RestoreIcon /></div>} />
-          <BottomNavigationButton label="Posotion" icon={<div style={buttonStyle}><AccessibilityIcon /></div>} />
+          <BottomNavigationButton label="Position" icon={<div style={buttonStyle}><AccessibilityIcon /></div>} />
           <BottomNavigationButton label="Move" icon={<div style={buttonStyle}><DirectionsWalkIcon /></div>} />
           <BottomNavigationButton label="Issue" icon={<div style={buttonStyle}><BugReportIcon /></div>} />
           <BottomNavigationButton label="Setting" icon={<div style={buttonStyle}><Settingscon /></div>} />
