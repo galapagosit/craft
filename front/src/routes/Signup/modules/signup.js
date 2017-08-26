@@ -4,11 +4,9 @@ import {browserHistory} from 'react-router'
 export const signupAsync = (form) => {
   return (dispatch, getState) => {
     return fetch(`${CONFIG.BASE_URL}/signup`, {
+      ...CONFIG.FETCH_BASE_PARAMS,
       method: 'POST',
-      headers: CONFIG.COMMON_HEADERS,
       body: JSON.stringify(form),
-      mode: 'cors',
-      credentials: 'include'
     }).then(
       response => response.json()
     ).then(json => {

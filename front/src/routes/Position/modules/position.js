@@ -3,10 +3,8 @@ import fetch from 'isomorphic-fetch';
 export const getPositionsAsync = () => {
   return (dispatch, getState) => {
     return fetch(`${CONFIG.BASE_URL}/positions`, {
+      ...CONFIG.FETCH_BASE_PARAMS,
       method: 'GET',
-      headers: CONFIG.COMMON_HEADERS,
-      mode: 'cors',
-      credentials: 'include'
     }).then(
       response => response.json()
     ).then(json => {
@@ -21,8 +19,8 @@ export const getPositionsAsync = () => {
 export const createPositionAsync = (form) => {
   return (dispatch, getState) => {
     return fetch(`${CONFIG.BASE_URL}/positions`, {
+      ...CONFIG.FETCH_BASE_PARAMS,
       method: 'POST',
-      headers: CONFIG.COMMON_HEADERS,
       body: JSON.stringify(form)
     }).then(
       response => response.json()
