@@ -9,16 +9,40 @@ import Dialog, {
   DialogContentText,
   DialogTitle,
 } from 'material-ui/Dialog';
+import {SortableContainer, SortableElement, SortableHandle, arrayMove} from 'react-sortable-hoc';
 
 const styleSheet = createStyleSheet((theme) => ({}));
+
+const DragHandle = SortableHandle(() => <span>::</span>); // This can be any component you want
+
+const SortableItem = SortableElement(({value}) =>
+  <li><DragHandle />{value}</li>
+);
+
+const SortableList = SortableContainer(({positions}) => {
+  return (
+    <ul>
+      {positions.map((position, index) => (
+        <SortableItem key={`item-${index}`} index={index} value={position.name} />
+      ))}
+    </ul>
+  );
+});
 
 
 class PositionView extends React.Component {
   state = {
     dialog_open: false,
-    position: {
+    //positions: ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6'],
+    add_position: {
       name: ''
     },
+  };
+
+  onSortEnd = ({oldIndex, newIndex}) => {
+    this.setState({
+      positions: arrayMove(this.props.positions, oldIndex, newIndex),
+    });
   };
 
   componentDidMount() {
@@ -27,13 +51,13 @@ class PositionView extends React.Component {
 
   handleRequestClose = () => {
     this.setState({dialog_open: false})
-    this.setState({position: {name: ''}})
+    this.setState({add_position: {name: ''}})
   }
 
   addPosition = () => {
-    this.props.createPositionAsync(this.state.position)
+    this.props.createPositionAsync(this.state.add_position)
     this.setState({dialog_open: false})
-    this.setState({position: {name: ''}})
+    this.setState({add_position: {name: ''}})
   }
 
   render() {
@@ -45,6 +69,8 @@ class PositionView extends React.Component {
                 onClick={event => this.setState({dialog_open: true})}>
           <AddIcon/>
         </Button>
+
+        <SortableList positions={this.props.position.positions} onSortEnd={this.onSortEnd} useDragHandle={true} />
 
         <Dialog open={this.state.dialog_open} onRequestClose={this.handleRequestClose}>
           <DialogTitle>
@@ -59,8 +85,8 @@ class PositionView extends React.Component {
               label="name"
               InputProps={{placeholder: 'Add new position'}}
               helperText="ex. Bottom Closed Guard"
-              value={this.state.position.name}
-              onChange={event => this.setState({position: {name: event.target.value}})}
+              value={this.state.add_position.name}
+              onChange={event => this.setState({add_position: {name: event.target.value}})}
               fullWidth
               margin="normal"
             />
@@ -79,5 +105,12 @@ class PositionView extends React.Component {
     )
   }
 }
+
+PositionView.defaultProps = {
+  position:{
+    positions: [],
+  }
+};
+
 
 export default withStyles(styleSheet)(PositionView);

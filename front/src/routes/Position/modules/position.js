@@ -42,11 +42,11 @@ export const actions = {
 // Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
-  ['GET_POSITIONS_ASYNC']: (state, positions) => {
-    return positions
+  ['GET_POSITIONS_ASYNC']: (state, action) => {
+    return {...state, positions: action.payload}
   },
-  ['CREATE_POSITION_ASYNC']: (state, position) => {
-    return [...state, position]
+  ['CREATE_POSITION_ASYNC']: (state, action) => {
+    return {...state, positions: [...state.positions, action.payload]}
   }
 }
 
@@ -54,7 +54,7 @@ const ACTION_HANDLERS = {
 // Reducer
 // ------------------------------------
 const initialState = {
-  positions: []
+  positions:[]
 }
 export default function positionReducer(state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type]
