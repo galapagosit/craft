@@ -34,6 +34,7 @@ func setModels() {
 
 	// Migrate the schema
 	db.AutoMigrate(&models.User{})
+	db.AutoMigrate(&models.Position{})
 }
 
 func setRoutes(e *echo.Echo) {
@@ -42,8 +43,12 @@ func setRoutes(e *echo.Echo) {
 	})
 
 	e.POST("/signup", handlers.Signup)
+
 	e.POST("/login", handlers.Login)
 	e.POST("/logout", handlers.Logout)
+
+	e.POST("/positions", handlers.CreatePosition)
+	e.GET("/positions", handlers.GetPositions)
 }
 
 type CustomValidator struct {
@@ -68,7 +73,13 @@ func main() {
 	e.Use(middleware.Recover())
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins: []string{"http://localhost:3000"},
-		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
+		AllowHeaders: []string{
+			echo.HeaderOrigin,
+			echo.HeaderContentType,
+			echo.HeaderAccept,
+			echo.HeaderCookie,
+		},
+		AllowCredentials: true,
 	}))
 
 	store, err := session.NewPostgresStore(viper.GetString("db.args"), []byte("uekjdakjnc"))

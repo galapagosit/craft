@@ -45,8 +45,9 @@ func Signup(c echo.Context) (err error) {
 	if err != nil {
 		panic(err)
 	}
-	cc.Db.Create(&models.User{Email: signupForm.Email, HashedPassword: string(hashedPassword)})
-	session.Set("is_login", true)
+	user := &models.User{Email: signupForm.Email, HashedPassword: string(hashedPassword)}
+	cc.Db.Create(user)
+	session.Set("user_id", user.ID)
 	session.Save()
 
 	return c.JSON(http.StatusOK, SignupResult{
@@ -57,38 +58,39 @@ func Signup(c echo.Context) (err error) {
 func Login(c echo.Context) (err error) {
 	cc := c.(*middlewares.CustomContext)
 	session := session.Default(c)
-	if c.Request().Method == "POST" {
-		userForm := new(UserForm)
-		if err = c.Bind(userForm); err != nil {
-			return
-		}
-		if err = c.Validate(userForm); err != nil {
-			return
-		}
 
-		var user models.User
-		var count = 0
-		cc.Db.First(&user, &models.User{Email: userForm.Email}).Count(&count)
-		if count == 0 {
-			return c.Render(http.StatusOK, "login", nil)
-		}
+	userForm := new(UserForm)
+	if err = c.Bind(userForm); err != nil {
+		return
+	}
+	if err = c.Validate(userForm); err != nil {
+		return
+	}
 
-		err = bcrypt.CompareHashAndPassword([]byte(user.HashedPassword), []byte(userForm.Password))
-		if err != nil {
-			return c.Render(http.StatusOK, "login", nil)
-		} else {
-			session.Set("is_login", true)
-			session.Save()
-			return c.Redirect(http.StatusMovedPermanently, "/")
-		}
-	} else {
+	var user models.User
+	var count = 0
+	cc.Db.First(&user, &models.User{Email: userForm.Email}).Count(&count)
+	if count == 0 {
 		return c.Render(http.StatusOK, "login", nil)
+	}
+
+	err = bcrypt.CompareHashAndPassword([]byte(user.HashedPassword), []byte(userForm.Password))
+	if err != nil {
+		return c.JSON(http.StatusOK, SignupResult{
+			Result: "ng",
+		})
+	} else {
+		session.Set("user_id", user.ID)
+		session.Save()
+		return c.JSON(http.StatusOK, SignupResult{
+			Result: "ok",
+		})
 	}
 }
 
 func Logout(c echo.Context) (err error) {
 	session := session.Default(c)
-	session.Delete("is_login")
+	session.Delete("user_id")
 	session.Save()
 	return c.Redirect(http.StatusMovedPermanently, "/login")
 }

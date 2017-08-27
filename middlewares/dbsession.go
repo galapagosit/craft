@@ -13,7 +13,7 @@ func DbSession(next echo.HandlerFunc) echo.HandlerFunc {
 			panic("failed to connect database")
 		}
 		defer db.Close()
-		cc := &CustomContext{c, db}
+		cc := &CustomContext{c, db, nil}
 		return next(cc)
 	}
 }

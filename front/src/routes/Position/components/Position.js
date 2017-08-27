@@ -10,12 +10,7 @@ import Dialog, {
   DialogTitle,
 } from 'material-ui/Dialog';
 
-const styleSheet = createStyleSheet((theme) => ({
-  root: {
-    'margin-top': 30,
-    'margin-bottom': 10,
-  },
-}));
+const styleSheet = createStyleSheet((theme) => ({}));
 
 
 class PositionView extends React.Component {
@@ -23,15 +18,22 @@ class PositionView extends React.Component {
     dialog_open: false,
     position: {
       name: ''
-    }
-  };
-
-  handleRequestClose = () => {
-    this.setState({dialog_open: false});
+    },
   };
 
   componentDidMount() {
-    this.props.getPositionsAsync();
+    this.props.getPositionsAsync()
+  }
+
+  handleRequestClose = () => {
+    this.setState({dialog_open: false})
+    this.setState({position: {name: ''}})
+  }
+
+  addPosition = () => {
+    this.props.createPositionAsync(this.state.position)
+    this.setState({dialog_open: false})
+    this.setState({position: {name: ''}})
   }
 
   render() {
@@ -46,31 +48,28 @@ class PositionView extends React.Component {
 
         <Dialog open={this.state.dialog_open} onRequestClose={this.handleRequestClose}>
           <DialogTitle>
-            {"Add new position"}
+            {"Add position"}
           </DialogTitle>
-          <div>
+          <DialogContent>
+            <DialogContentText>
+              Add new position. You can nest position under other position.
+            </DialogContentText>
             <TextField
               id="name"
               label="name"
+              InputProps={{placeholder: 'Add new position'}}
+              helperText="ex. Bottom Closed Guard"
               value={this.state.position.name}
-              onChange={event => this.setState({
-                ...this.state,
-                position: {...this.state.position, name: event.target.value}
-              })}
+              onChange={event => this.setState({position: {name: event.target.value}})}
+              fullWidth
               margin="normal"
             />
-          </div>
-          <DialogContent>
-            <DialogContentText>
-              Let Google help apps determine location. This means sending anonymous location data to
-              Google, even when no apps are running.
-            </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleRequestClose}>
+            <Button onClick={this.handleRequestClose} color="primary">
               Cancel
             </Button>
-            <Button onClick={() => this.props.createPositionAsync(this.state.position)} color="primary">
+            <Button onClick={this.addPosition} color="primary">
               Add
             </Button>
           </DialogActions>
