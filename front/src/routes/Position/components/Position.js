@@ -2,6 +2,7 @@ import React from 'react'
 import Button from 'material-ui/Button';
 import {withStyles, createStyleSheet} from 'material-ui/styles';
 import AddIcon from 'material-ui-icons/Add';
+import FolderIcon from 'material-ui-icons/Folder';
 import TextField from 'material-ui/TextField';
 import Dialog, {
   DialogActions,
@@ -10,22 +11,34 @@ import Dialog, {
   DialogTitle,
 } from 'material-ui/Dialog';
 import {SortableContainer, SortableElement, SortableHandle, arrayMove} from 'react-sortable-hoc';
+import List, { ListItem, ListItemText } from 'material-ui/List';
+import Avatar from 'material-ui/Avatar';
 
-const styleSheet = createStyleSheet((theme) => ({}));
 
-const DragHandle = SortableHandle(() => <span>::</span>); // This can be any component you want
+const styleSheet = createStyleSheet((theme) => ({root: {}}));
 
-const SortableItem = SortableElement(({value}) =>
-  <li><DragHandle />{value}</li>
+const DragHandle = SortableHandle(() =>
+  <Avatar>
+    <FolderIcon/>
+  </Avatar>
+); // This can be any component you want
+
+const SortableItem = SortableElement(({position}) =>
+  <ListItem button>
+    <DragHandle/>
+    <ListItemText primary={position.name} secondary="Jan 9, 2016"/>
+  </ListItem>
 );
 
 const SortableList = SortableContainer(({positions}) => {
   return (
-    <ul>
-      {positions.map((position, index) => (
-        <SortableItem key={`item-${index}`} index={index} value={position.name} />
-      ))}
-    </ul>
+    <div>
+      <List>
+        {positions.map((position, index) => (
+          <SortableItem key={`item-${index}`} index={index} position={position} />
+        ))}
+      </List>
+    </div>
   );
 });
 
