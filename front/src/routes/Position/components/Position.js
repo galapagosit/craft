@@ -2,7 +2,6 @@ import React from 'react'
 import Button from 'material-ui/Button';
 import {withStyles, createStyleSheet} from 'material-ui/styles';
 import AddIcon from 'material-ui-icons/Add';
-import FolderIcon from 'material-ui-icons/Folder';
 import TextField from 'material-ui/TextField';
 import Dialog, {
   DialogActions,
@@ -10,43 +9,17 @@ import Dialog, {
   DialogContentText,
   DialogTitle,
 } from 'material-ui/Dialog';
-import {SortableContainer, SortableElement, SortableHandle, arrayMove} from 'react-sortable-hoc';
-import List, { ListItem, ListItemText } from 'material-ui/List';
-import Avatar from 'material-ui/Avatar';
+
+import PositionList from './PositionList';
+import {arrayMove} from 'react-sortable-hoc';
 
 
 const styleSheet = createStyleSheet((theme) => ({root: {}}));
-
-const DragHandle = SortableHandle(() =>
-  <Avatar>
-    <FolderIcon/>
-  </Avatar>
-); // This can be any component you want
-
-const SortableItem = SortableElement(({position}) =>
-  <ListItem button>
-    <DragHandle/>
-    <ListItemText primary={position.name} secondary="Jan 9, 2016"/>
-  </ListItem>
-);
-
-const SortableList = SortableContainer(({positions}) => {
-  return (
-    <div>
-      <List>
-        {positions.map((position, index) => (
-          <SortableItem key={`item-${index}`} index={index} position={position} />
-        ))}
-      </List>
-    </div>
-  );
-});
 
 
 class PositionView extends React.Component {
   state = {
     dialog_open: false,
-    //positions: ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6'],
     add_position: {
       name: ''
     },
@@ -77,13 +50,12 @@ class PositionView extends React.Component {
     const classes = this.props.classes;
     return (
       <div>
-        <h4>Position</h4>
         <Button fab color="primary" aria-label="add" className={classes.button}
                 onClick={event => this.setState({dialog_open: true})}>
           <AddIcon/>
         </Button>
 
-        <SortableList positions={this.props.position.positions} onSortEnd={this.onSortEnd} useDragHandle={true} />
+        <PositionList positions={this.props.position.positions} onSortEnd={this.onSortEnd} useDragHandle={true} />
 
         <Dialog open={this.state.dialog_open} onRequestClose={this.handleRequestClose}>
           <DialogTitle>

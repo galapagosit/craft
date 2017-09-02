@@ -11,6 +11,7 @@ import DirectionsWalkIcon from 'material-ui-icons/DirectionsWalk';
 import BugReportIcon from 'material-ui-icons/BugReport';
 import Settingscon from 'material-ui-icons/Settings';
 import {browserHistory} from 'react-router'
+import Divider from 'material-ui/Divider';
 
 
 const styleSheet = createStyleSheet({
@@ -52,6 +53,7 @@ class FooterNavigation extends React.Component {
     const { value } = this.state;
     return (
       <div className={classes.root}>
+        <Divider />
         <BottomNavigation value={value} onChange={this.handleChange} showLabels>
           <BottomNavigationButton label="Recent" icon={<div style={buttonStyle}><RestoreIcon /></div>} />
           <BottomNavigationButton label="Position" icon={<div style={buttonStyle}><AccessibilityIcon /></div>} />
