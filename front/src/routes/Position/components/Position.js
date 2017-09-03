@@ -9,6 +9,7 @@ import Dialog, {
   DialogContentText,
   DialogTitle,
 } from 'material-ui/Dialog';
+import Container from './Simple/Container';
 
 
 
@@ -47,6 +48,7 @@ class PositionView extends React.Component {
           <AddIcon/>
         </Button>
 
+        <Container />
 
         <Dialog open={this.state.dialog_open} onRequestClose={this.handleRequestClose}>
           <DialogTitle>

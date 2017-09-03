@@ -74,6 +74,7 @@ config.module.rules.push({
             useBuiltIns: true // we polyfill Object.assign in src/normalize.js
           },
         ],
+        'transform-decorators-legacy'
       ],
       presets: [
         'babel-preset-react',
