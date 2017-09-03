@@ -10,8 +10,6 @@ import Dialog, {
   DialogTitle,
 } from 'material-ui/Dialog';
 
-import PositionList from './PositionList';
-import {arrayMove} from 'react-sortable-hoc';
 
 
 const styleSheet = createStyleSheet((theme) => ({root: {}}));
@@ -23,12 +21,6 @@ class PositionView extends React.Component {
     add_position: {
       name: ''
     },
-  };
-
-  onSortEnd = ({oldIndex, newIndex}) => {
-    this.setState({
-      positions: arrayMove(this.props.positions, oldIndex, newIndex),
-    });
   };
 
   componentDidMount() {
@@ -55,7 +47,6 @@ class PositionView extends React.Component {
           <AddIcon/>
         </Button>
 
-        <PositionList positions={this.props.position.positions} onSortEnd={this.onSortEnd} useDragHandle={true} />
 
         <Dialog open={this.state.dialog_open} onRequestClose={this.handleRequestClose}>
           <DialogTitle>
