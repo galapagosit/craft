@@ -9,7 +9,7 @@ import RestoreIcon from 'material-ui-icons/Restore';
 import AccessibilityIcon from 'material-ui-icons/Accessibility';
 import DirectionsWalkIcon from 'material-ui-icons/DirectionsWalk';
 import BugReportIcon from 'material-ui-icons/BugReport';
-import Settingscon from 'material-ui-icons/Settings';
+import SettingsIcon from 'material-ui-icons/Settings';
 import {browserHistory} from 'react-router'
 import Divider from 'material-ui/Divider';
 
@@ -22,9 +22,17 @@ const styleSheet = createStyleSheet({
   },
 });
 
+const navStyle = {
+  'padding': '0',
+  'min-width': '50px'
+};
 
 const buttonStyle = {
   'height': '24px'
+};
+
+const iconStyle = {
+  'width': '20'
 };
 
 class FooterNavigation extends React.Component {
@@ -55,11 +63,11 @@ class FooterNavigation extends React.Component {
       <div className={classes.root}>
         <Divider />
         <BottomNavigation value={value} onChange={this.handleChange} showLabels>
-          <BottomNavigationButton label="Recent" icon={<div style={buttonStyle}><RestoreIcon /></div>} />
-          <BottomNavigationButton label="Position" icon={<div style={buttonStyle}><AccessibilityIcon /></div>} />
-          <BottomNavigationButton label="Move" icon={<div style={buttonStyle}><DirectionsWalkIcon /></div>} />
-          <BottomNavigationButton label="Issue" icon={<div style={buttonStyle}><BugReportIcon /></div>} />
-          <BottomNavigationButton label="Setting" icon={<div style={buttonStyle}><Settingscon /></div>} />
+          <BottomNavigationButton style={navStyle} label="Recent" icon={<div style={buttonStyle}><RestoreIcon /></div>} />
+          <BottomNavigationButton style={navStyle} label="Position" icon={<div style={buttonStyle}><AccessibilityIcon /></div>} />
+          <BottomNavigationButton style={navStyle} label="Move" icon={<div style={buttonStyle}><DirectionsWalkIcon /></div>} />
+          <BottomNavigationButton style={navStyle} label="Issue" icon={<div style={buttonStyle}><BugReportIcon /></div>} />
+          <BottomNavigationButton style={navStyle} label="Setting" icon={<div style={buttonStyle}><SettingsIcon /></div>} />
         </BottomNavigation>
       </div>
     )

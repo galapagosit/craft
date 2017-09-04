@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
 import update from 'react/lib/update';
 import { DragDropContext } from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
+import ReactDnDHTML5Backend from 'react-dnd-html5-backend'
+import ReactDnDTouchBackend from 'react-dnd-touch-backend'
 import Card from './Card';
+
+const isMobile= navigator.userAgent.match(/(Android|webOS|iPhone|iPad|iPod|BlackBerry|Windows Phone)/i) !== null
 
 const style = {
   width: 400,
 };
 
-@DragDropContext(HTML5Backend)
+@DragDropContext(isMobile? ReactDnDTouchBackend: ReactDnDHTML5Backend)
 export default class Container extends Component {
   constructor(props) {
     super(props);
