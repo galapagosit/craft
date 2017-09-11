@@ -9,7 +9,8 @@ import Dialog, {
   DialogContentText,
   DialogTitle,
 } from 'material-ui/Dialog';
-import Container from './Simple/Container';
+import PositionList from './PositionList';
+import AppBar from '../../../components/AppBar';
 
 
 
@@ -39,16 +40,17 @@ class PositionView extends React.Component {
     this.setState({add_position: {name: ''}})
   }
 
+  handleClickMenu = (event) => {
+    this.setState({dialog_open: true})
+  }
+
   render() {
     const classes = this.props.classes;
     return (
       <div>
-        <Button fab color="primary" aria-label="add" className={classes.button}
-                onClick={event => this.setState({dialog_open: true})}>
-          <AddIcon/>
-        </Button>
+        <AppBar onClickMenu={this.handleClickMenu} />
 
-        <Container />
+        <PositionList />
 
         <Dialog open={this.state.dialog_open} onRequestClose={this.handleRequestClose}>
           <DialogTitle>
