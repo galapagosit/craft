@@ -18,13 +18,14 @@ const styleSheet = createStyleSheet({
   root: {
     position: 'fixed',
     bottom: 0,
-    width: '100%'
+    width: '100%',
+    height: '54px'
   },
 });
 
 const navStyle = {
   'padding': '0',
-  'min-width': '50px'
+  minWidth: '50px'
 };
 
 const buttonStyle = {

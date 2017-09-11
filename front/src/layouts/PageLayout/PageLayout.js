@@ -5,8 +5,8 @@ import './PageLayout.scss'
 import FooterNavigation from '../../components/FooterNavigation'
 
 export const PageLayout = ({ children }) => (
-  <div className='container text-center' style={{height: '100%', width: '100%', padding: 0}}>
-    <div className='page-layout__viewport'>
+  <div className='container' style={{height: '100%', width: '100%', padding: 0}}>
+    <div className='page-layout__viewport' style={{paddingBottom: '64px'}}>
       {children}
     </div>
     <FooterNavigation classes={{root: 'footer'}}/>

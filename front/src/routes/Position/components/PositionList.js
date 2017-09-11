@@ -20,7 +20,7 @@ const DragHandle = SortableHandle(() => {
 
 const SortableItem = SortableElement(({value}) => {
   return (
-    <div style={{"text-align": 'center'}}>
+    <div style={{textAlign: 'center'}}>
       <ListItem button>
         <DragHandle/>
         <ListItemText primary="Inbox" />
@@ -31,7 +31,7 @@ const SortableItem = SortableElement(({value}) => {
 
 const SortableList = SortableContainer(({items}) => {
   return (
-    <div>
+    <div style={{paddingTop: '64px'}} >
       {items.map((value, index) => (
         <SortableItem key={`item-${index}`} index={index} value={value} />
       ))}
