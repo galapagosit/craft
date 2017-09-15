@@ -31,7 +31,7 @@ const SortableItem = SortableElement(({value}) => {
 
 const SortableList = SortableContainer(({items}) => {
   return (
-    <div style={{paddingTop: '64px'}} >
+    <div>
       {items.map((value, index) => (
         <SortableItem key={`item-${index}`} index={index} value={value} />
       ))}

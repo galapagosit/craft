@@ -1,7 +1,6 @@
 import React from 'react'
 import Button from 'material-ui/Button';
 import {withStyles, createStyleSheet} from 'material-ui/styles';
-import AddIcon from 'material-ui-icons/Add';
 import TextField from 'material-ui/TextField';
 import Dialog, {
   DialogActions,
@@ -10,8 +9,8 @@ import Dialog, {
   DialogTitle,
 } from 'material-ui/Dialog';
 import PositionList from './PositionList';
+import PositionDrawer from './PositionDrawer';
 import AppBar from '../../../components/AppBar';
-
 
 
 const styleSheet = createStyleSheet((theme) => ({root: {}}));
@@ -48,38 +47,41 @@ class PositionView extends React.Component {
     const classes = this.props.classes;
     return (
       <div>
-        <AppBar onClickMenu={this.handleClickMenu} />
+        <AppBar onClickMenu={this.handleClickMenu}/>
 
-        <PositionList />
+        <div style={{paddingTop: '64px'}}>
+          <PositionDrawer/>
+          <PositionList/>
 
-        <Dialog open={this.state.dialog_open} onRequestClose={this.handleRequestClose}>
-          <DialogTitle>
-            {"Add position"}
-          </DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Add new position. You can nest position under other position.
-            </DialogContentText>
-            <TextField
-              id="name"
-              label="name"
-              InputProps={{placeholder: 'Add new position'}}
-              helperText="ex. Bottom Closed Guard"
-              value={this.state.add_position.name}
-              onChange={event => this.setState({add_position: {name: event.target.value}})}
-              fullWidth
-              margin="normal"
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={this.handleRequestClose} color="primary">
-              Cancel
-            </Button>
-            <Button onClick={this.addPosition} color="primary">
-              Add
-            </Button>
-          </DialogActions>
-        </Dialog>
+          <Dialog open={this.state.dialog_open} onRequestClose={this.handleRequestClose}>
+            <DialogTitle>
+              {"Add position"}
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Add new position. You can nest position under other position.
+              </DialogContentText>
+              <TextField
+                id="name"
+                label="name"
+                InputProps={{placeholder: 'Add new position'}}
+                helperText="ex. Bottom Closed Guard"
+                value={this.state.add_position.name}
+                onChange={event => this.setState({add_position: {name: event.target.value}})}
+                fullWidth
+                margin="normal"
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={this.handleRequestClose} color="primary">
+                Cancel
+              </Button>
+              <Button onClick={this.addPosition} color="primary">
+                Add
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </div>
 
       </div>
     )
@@ -87,7 +89,7 @@ class PositionView extends React.Component {
 }
 
 PositionView.defaultProps = {
-  position:{
+  position: {
     positions: [],
   }
 };
