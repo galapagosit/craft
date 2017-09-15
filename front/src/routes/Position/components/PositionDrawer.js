@@ -20,33 +20,17 @@ const styles = createStyleSheet(theme => ({
 }));
 
 class PositionDrawer extends React.Component {
-  state = {
-    open: false
-  };
-
-  toggleDrawer = (open) => {
-    this.setState({ open: open });
-  };
-
-  handleOpen = () => {
-    this.toggleDrawer(true);
-  };
-
-  handleClose = () => {
-    this.toggleDrawer(false);
-  };
-
   render() {
     const classes = this.props.classes;
 
     const sideList = (
       <div>
         <List className={classes.list}>
-          <ListItem button>
+          <ListItem button onClick={() => this.props.updateState({dialog_open: true, drawer_open: false})}>
             <ListItemIcon>
               <SendIcon />
             </ListItemIcon>
-            <ListItemText inset primary="Sent mail" />
+            <ListItemText inset primary="Add position" />
           </ListItem>
           <ListItem button>
             <ListItemIcon>
@@ -66,12 +50,10 @@ class PositionDrawer extends React.Component {
 
     return (
       <div>
-        <Button onClick={this.handleOpen}>Open Right</Button>
         <Drawer
           anchor="right"
-          open={this.state.open}
-          onRequestClose={this.handleClose}
-          onClick={this.handleClose}
+          open={this.props.open}
+          onRequestClose={() => this.props.updateState({drawer_open: false})}
         >
           {sideList}
         </Drawer>

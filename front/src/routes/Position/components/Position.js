@@ -19,6 +19,7 @@ const styleSheet = createStyleSheet((theme) => ({root: {}}));
 class PositionView extends React.Component {
   state = {
     dialog_open: false,
+    drawer_open: false,
     add_position: {
       name: ''
     },
@@ -29,7 +30,7 @@ class PositionView extends React.Component {
   }
 
   handleRequestClose = () => {
-    this.setState({dialog_open: false})
+    this.setState({dialog_open: false, drawer_open:false})
     this.setState({add_position: {name: ''}})
   }
 
@@ -40,7 +41,11 @@ class PositionView extends React.Component {
   }
 
   handleClickMenu = (event) => {
-    this.setState({dialog_open: true})
+    this.setState({drawer_open: true})
+  }
+
+  updateState = (state) => {
+    this.setState(state);
   }
 
   render() {
@@ -50,7 +55,7 @@ class PositionView extends React.Component {
         <AppBar onClickMenu={this.handleClickMenu}/>
 
         <div style={{paddingTop: '64px'}}>
-          <PositionDrawer/>
+          <PositionDrawer open={this.state.drawer_open} updateState={this.updateState} />
           <PositionList/>
 
           <Dialog open={this.state.dialog_open} onRequestClose={this.handleRequestClose}>
