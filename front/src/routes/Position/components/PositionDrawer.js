@@ -2,11 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, createStyleSheet } from 'material-ui/styles';
 import Drawer from 'material-ui/Drawer';
-import Button from 'material-ui/Button';
 import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
-import InboxIcon from 'material-ui-icons/MoveToInbox';
-import DraftsIcon from 'material-ui-icons/Drafts';
-import SendIcon from 'material-ui-icons/Send';
+import AccessibilityIcon from 'material-ui-icons/Accessibility';
+import DirectionsWalkIcon from 'material-ui-icons/DirectionsWalk';
 
 const styles = createStyleSheet(theme => ({
   list: {
@@ -28,21 +26,15 @@ class PositionDrawer extends React.Component {
         <List className={classes.list}>
           <ListItem button onClick={() => this.props.updateState({dialog_open: true, drawer_open: false})}>
             <ListItemIcon>
-              <SendIcon />
+              <AccessibilityIcon />
             </ListItemIcon>
             <ListItemText inset primary="Add position" />
           </ListItem>
-          <ListItem button>
+          <ListItem button onClick={() => this.props.updateState({move_dialog_open: true, drawer_open: false})}>
             <ListItemIcon>
-              <DraftsIcon />
+              <DirectionsWalkIcon />
             </ListItemIcon>
-            <ListItemText inset primary="Drafts" />
-          </ListItem>
-          <ListItem button>
-            <ListItemIcon>
-              <InboxIcon />
-            </ListItemIcon>
-            <ListItemText inset primary="Inbox" />
+            <ListItemText inset primary="Add move" />
           </ListItem>
         </List>
       </div>

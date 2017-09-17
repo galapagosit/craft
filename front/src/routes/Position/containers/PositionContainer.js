@@ -1,11 +1,18 @@
 import { connect } from 'react-redux'
-import { getPositionsAsync, createPositionAsync } from '../modules/position'
+import {
+  getPositionsAsync,
+  createPositionAsync,
+  getMovesAsync,
+  createMoveAsync,
+} from '../modules/position'
 
 import Position from '../components/Position'
 
 const mapDispatchToProps = {
   getPositionsAsync,
-  createPositionAsync
+  createPositionAsync,
+  getMovesAsync,
+  createMoveAsync,
 }
 
 const mapStateToProps = (state) => ({

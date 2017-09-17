@@ -6,34 +6,57 @@ import {
   SortableHandle,
   arrayMove,
 } from 'react-sortable-hoc';
-import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
+import List, {ListItem, ListItemIcon, ListItemText} from 'material-ui/List';
+import AccessibilityIcon from 'material-ui-icons/Accessibility';
+import DirectionsWalkIcon from 'material-ui-icons/DirectionsWalk';
 
-import InboxIcon from 'material-ui-icons/Inbox';
 
-const DragHandle = SortableHandle(() => {
+const PositionDragHandle = SortableHandle(() => {
   return (
     <ListItemIcon>
-      <InboxIcon/>
+      <AccessibilityIcon/>
     </ListItemIcon>
   )
 });
 
-const SortableItem = SortableElement(({value}) => {
+const Position = SortableElement(({position}) => {
   return (
     <div style={{textAlign: 'center'}}>
       <ListItem button>
-        <DragHandle/>
-        <ListItemText primary="Inbox" />
+        <PositionDragHandle/>
+        <ListItemText primary={position.name}/>
       </ListItem>
     </div>
   );
 });
 
-const SortableList = SortableContainer(({items}) => {
+const MoveDragHandle = SortableHandle(() => {
+  return (
+    <ListItemIcon>
+      <DirectionsWalkIcon/>
+    </ListItemIcon>
+  )
+});
+
+const Move = SortableElement(({move}) => {
+  return (
+    <div style={{textAlign: 'center'}}>
+      <ListItem button>
+        <MoveDragHandle/>
+        <ListItemText primary={move.name}/>
+      </ListItem>
+    </div>
+  );
+});
+
+const SortableList = SortableContainer(({positions, moves}) => {
   return (
     <div>
-      {items.map((value, index) => (
-        <SortableItem key={`item-${index}`} index={index} value={value} />
+      {positions.map((position, index) => (
+        <Position key={`item-${index}`} index={index} position={position}/>
+      ))}
+      {moves.map((move, index) => (
+        <Move key={`item-${index}`} index={index} position={move}/>
       ))}
     </div>
   );
@@ -50,10 +73,9 @@ class PositionList extends Component {
       items: arrayMove(items, oldIndex, newIndex),
     });
   };
-  render() {
-    const {items} = this.state;
 
-    return <SortableList items={items} onSortEnd={this.onSortEnd} useDragHandle={true} />;
+  render() {
+    return <SortableList positions={this.props.positions} moves={this.props.moves} onSortEnd={this.onSortEnd} useDragHandle={true}/>;
   }
 }
 

@@ -33,9 +33,44 @@ export const createPositionAsync = (form) => {
   }
 }
 
+export const getMovesAsync = () => {
+  return (dispatch, getState) => {
+    return fetch(`${CONFIG.BASE_URL}/moves`, {
+      ...CONFIG.FETCH_BASE_PARAMS,
+      method: 'GET',
+    }).then(
+      response => response.json()
+    ).then(json => {
+      dispatch({
+        type: 'GET_MOVES_ASYNC',
+        payload: json
+      })
+    })
+  }
+}
+
+export const createMoveAsync = (form) => {
+  return (dispatch, getState) => {
+    return fetch(`${CONFIG.BASE_URL}/moves`, {
+      ...CONFIG.FETCH_BASE_PARAMS,
+      method: 'POST',
+      body: JSON.stringify(form)
+    }).then(
+      response => response.json()
+    ).then(json => {
+      dispatch({
+        type: 'CREATE_MOVE_ASYNC',
+        payload: json
+      })
+    })
+  }
+}
+
 export const actions = {
   getPositionsAsync,
   createPositionAsync,
+  getMovesAsync,
+  createMoveAsync,
 }
 
 // ------------------------------------
@@ -47,6 +82,12 @@ const ACTION_HANDLERS = {
   },
   ['CREATE_POSITION_ASYNC']: (state, action) => {
     return {...state, positions: [...state.positions, action.payload]}
+  },
+  ['GET_MOVES_ASYNC']: (state, action) => {
+    return {...state, moves: action.payload}
+  },
+  ['CREATE_MOVE_ASYNC']: (state, action) => {
+    return {...state, moves: [...state.moves, action.payload]}
   }
 }
 
@@ -54,7 +95,8 @@ const ACTION_HANDLERS = {
 // Reducer
 // ------------------------------------
 const initialState = {
-  positions:[]
+  positions:[],
+  moves:[]
 }
 export default function positionReducer(state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type]

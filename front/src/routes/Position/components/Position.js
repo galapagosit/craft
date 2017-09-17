@@ -18,26 +18,48 @@ const styleSheet = createStyleSheet((theme) => ({root: {}}));
 
 class PositionView extends React.Component {
   state = {
-    dialog_open: false,
     drawer_open: false,
+    position_dialog_open: false,
+    move_dialog_open: false,
     add_position: {
+      name: ''
+    },
+    add_move: {
       name: ''
     },
   };
 
   componentDidMount() {
     this.props.getPositionsAsync()
+    this.props.getMovesAsync()
   }
 
-  handleRequestClose = () => {
-    this.setState({dialog_open: false, drawer_open:false})
+  handleRequestClosePosition = () => {
+    this.setState({
+      position_dialog_open: false,
+      drawer_open: false
+    })
     this.setState({add_position: {name: ''}})
+  }
+
+  handleRequestCloseMove = () => {
+    this.setState({
+      move_dialog_open: false,
+      drawer_open: false
+    })
+    this.setState({add_move: {name: ''}})
   }
 
   addPosition = () => {
     this.props.createPositionAsync(this.state.add_position)
-    this.setState({dialog_open: false})
+    this.setState({position_dialog_open: false})
     this.setState({add_position: {name: ''}})
+  }
+
+  addMove = () => {
+    this.props.createMoveAsync(this.state.add_move)
+    this.setState({move_dialog_open: false})
+    this.setState({add_move: {name: ''}})
   }
 
   handleClickMenu = (event) => {
@@ -55,10 +77,10 @@ class PositionView extends React.Component {
         <AppBar onClickMenu={this.handleClickMenu}/>
 
         <div style={{paddingTop: '64px'}}>
-          <PositionDrawer open={this.state.drawer_open} updateState={this.updateState} />
-          <PositionList/>
+          <PositionDrawer open={this.state.drawer_open} updateState={this.updateState}/>
+          <PositionList positions={this.props.position.positions} moves={this.props.position.moves}/>
 
-          <Dialog open={this.state.dialog_open} onRequestClose={this.handleRequestClose}>
+          <Dialog open={this.state.position_dialog_open} onRequestClose={this.handleRequestClosePosition}>
             <DialogTitle>
               {"Add position"}
             </DialogTitle>
@@ -78,10 +100,39 @@ class PositionView extends React.Component {
               />
             </DialogContent>
             <DialogActions>
-              <Button onClick={this.handleRequestClose} color="primary">
+              <Button onClick={this.handleRequestClosePosition} color="primary">
                 Cancel
               </Button>
               <Button onClick={this.addPosition} color="primary">
+                Add
+              </Button>
+            </DialogActions>
+          </Dialog>
+
+          <Dialog open={this.state.move_dialog_open} onRequestClose={this.handleRequestCloseMove}>
+            <DialogTitle>
+              {"Add move"}
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Add new move. You can nest position under other position.
+              </DialogContentText>
+              <TextField
+                id="name"
+                label="name"
+                InputProps={{placeholder: 'Add new move'}}
+                helperText="ex. Flower Sweep"
+                value={this.state.add_move.name}
+                onChange={event => this.setState({add_move: {name: event.target.value}})}
+                fullWidth
+                margin="normal"
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={this.handleRequestCloseMove} color="primary">
+                Cancel
+              </Button>
+              <Button onClick={this.addMove} color="primary">
                 Add
               </Button>
             </DialogActions>
@@ -96,6 +147,7 @@ class PositionView extends React.Component {
 PositionView.defaultProps = {
   position: {
     positions: [],
+    moves: [],
   }
 };
 
