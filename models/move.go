@@ -5,10 +5,12 @@ import (
 	"database/sql"
 )
 
-type Position struct {
+type Move struct {
 	gorm.Model
 	User User
 	UserID uint
-	ParentPositionID sql.NullInt64
+	Position Position `validate:"-"`
+  PositionID sql.NullInt64 `validate:"required"`
 	Name string `json:"name" validate:"required"`
 }
+

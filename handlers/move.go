@@ -6,31 +6,34 @@ import (
 	"../middlewares"
 	"github.com/galapagosit/craft/models"
 	"github.com/labstack/echo"
-	"database/sql"
 )
 
 
-func CreatePosition(c echo.Context) (err error) {
+func CreateMove(c echo.Context) (err error) {
 	cc := c.(*middlewares.CustomContext)
-	position := new(models.Position)
-	if err = c.Bind(position); err != nil {
+	move := new(models.Move)
+	if err = c.Bind(move); err != nil {
 		return
 	}
 
-	if err = c.Validate(position); err != nil {
+	if err = c.Validate(move); err != nil {
 		return
 	}
-	position.User = *cc.User
-	position.ParentPositionID = sql.NullInt64{0, false}
-	cc.Db.Create(&position)
-	return c.JSON(http.StatusOK, position)
+
+	var position models.Position
+	cc.Db.First(&position, 1)
+	move.Position = position
+
+	move.User = *cc.User
+	cc.Db.Create(&move)
+	return c.JSON(http.StatusOK, move)
 }
 
-func GetPositions(c echo.Context) error {
+func GetMoves(c echo.Context) error {
 	cc := c.(*middlewares.CustomContext)
-	positions := []models.Position{}
-	cc.Db.Where(&models.Position{UserID: cc.User.ID}).Find(&positions)
-	return c.JSON(http.StatusOK, positions)
+	moves := []models.Move{}
+	cc.Db.Where(&models.Position{UserID: cc.User.ID}).Find(&moves)
+	return c.JSON(http.StatusOK, moves)
 }
 
 //func getPosition(c echo.Context) error {

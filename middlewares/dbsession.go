@@ -4,6 +4,8 @@ import (
 	"github.com/labstack/echo"
 	"github.com/jinzhu/gorm"
 	"github.com/spf13/viper"
+	"os"
+	"log"
 )
 
 func DbSession(next echo.HandlerFunc) echo.HandlerFunc {
@@ -13,6 +15,10 @@ func DbSession(next echo.HandlerFunc) echo.HandlerFunc {
 			panic("failed to connect database")
 		}
 		defer db.Close()
+
+		db.LogMode(true)
+		db.SetLogger(log.New(os.Stdout, "\n", 0))
+
 		cc := &CustomContext{c, db, nil}
 		return next(cc)
 	}

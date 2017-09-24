@@ -14,6 +14,7 @@ import (
 	"github.com/ipfans/echo-session"
 	"net/http"
 	"os"
+	"log"
 )
 
 func setConfigs() {
@@ -32,9 +33,21 @@ func setModels() {
 	}
 	defer db.Close()
 
+	db.LogMode(true)
+	db.SetLogger(log.New(os.Stdout, "\n", 0))
+
 	// Migrate the schema
-	db.AutoMigrate(&models.User{})
-	db.AutoMigrate(&models.Position{})
+	db.AutoMigrate(
+		&models.User{},
+		&models.Position{},
+		&models.Move{},
+	)
+
+	db.Model(&models.Position{}).AddForeignKey("user_id", "users(id)", "RESTRICT", "RESTRICT")
+	db.Model(&models.Position{}).AddForeignKey("parent_position_id", "positions(id)", "RESTRICT", "RESTRICT")
+
+	db.Model(&models.Move{}).AddForeignKey("user_id", "users(id)", "RESTRICT", "RESTRICT")
+	db.Model(&models.Move{}).AddForeignKey("position_id", "positions(id)", "RESTRICT", "RESTRICT")
 }
 
 func setRoutes(e *echo.Echo) {
@@ -49,6 +62,9 @@ func setRoutes(e *echo.Echo) {
 
 	e.POST("/positions", handlers.CreatePosition)
 	e.GET("/positions", handlers.GetPositions)
+
+	e.POST("/moves", handlers.CreateMove)
+	e.GET("/moves", handlers.GetMoves)
 }
 
 type CustomValidator struct {

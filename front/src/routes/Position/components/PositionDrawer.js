@@ -24,7 +24,7 @@ class PositionDrawer extends React.Component {
     const sideList = (
       <div>
         <List className={classes.list}>
-          <ListItem button onClick={() => this.props.updateState({dialog_open: true, drawer_open: false})}>
+          <ListItem button onClick={() => this.props.updateState({position_dialog_open: true, drawer_open: false})}>
             <ListItemIcon>
               <AccessibilityIcon />
             </ListItemIcon>
