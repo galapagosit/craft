@@ -53,10 +53,10 @@ const SortableList = SortableContainer(({positions, moves}) => {
   return (
     <div>
       {positions.map((position, index) => (
-        <Position key={`item-${index}`} index={index} position={position}/>
+        <Position key={`positions-${index}`} index={index} position={position}/>
       ))}
       {moves.map((move, index) => (
-        <Move key={`item-${index}`} index={index} move={move}/>
+        <Move key={`moves-${index}`} index={index + positions.length - 1} move={move}/>
       ))}
     </div>
   );
