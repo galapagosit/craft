@@ -1,7 +1,7 @@
 import { injectReducer } from '../../store/reducers'
 
 export default (store) => ({
-  path : 'position',
+  path : 'position/:id',
   getComponent (nextState, cb) {
     require.ensure([], (require) => {
       const Position = require('./containers/PositionContainer').default

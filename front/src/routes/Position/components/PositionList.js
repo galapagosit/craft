@@ -9,6 +9,7 @@ import {
 import List, {ListItem, ListItemIcon, ListItemText} from 'material-ui/List';
 import AccessibilityIcon from 'material-ui-icons/Accessibility';
 import DirectionsWalkIcon from 'material-ui-icons/DirectionsWalk';
+import {browserHistory} from 'react-router'
 
 
 const PositionDragHandle = SortableHandle(() => {
@@ -21,14 +22,26 @@ const PositionDragHandle = SortableHandle(() => {
 
 const Position = SortableElement(({position}) => {
   return (
-    <div style={{textAlign: 'center'}}>
-      <ListItem button>
-        <PositionDragHandle/>
-        <ListItemText primary={position.name}/>
-      </ListItem>
-    </div>
+    <PositionWrapped position={position} />
   );
 });
+
+class PositionWrapped extends Component {
+  handleClick = (event, value) => {
+    browserHistory.push(`/position/${this.props.position.ID}`)
+  };
+  render() {
+    const {position} = this.props;
+    return (
+      <div style={{textAlign: 'center'}}>
+        <ListItem button onClick={this.handleClick}>
+          <PositionDragHandle/>
+          <ListItemText primary={position.name}/>
+        </ListItem>
+      </div>
+    );
+  }
+}
 
 const MoveDragHandle = SortableHandle(() => {
   return (
@@ -40,14 +53,26 @@ const MoveDragHandle = SortableHandle(() => {
 
 const Move = SortableElement(({move}) => {
   return (
-    <div style={{textAlign: 'center'}}>
-      <ListItem button>
-        <MoveDragHandle/>
-        <ListItemText primary={move.name}/>
-      </ListItem>
-    </div>
+    <MoveWrapped move={move} />
   );
 });
+
+class MoveWrapped extends Component {
+  handleClick = (event, value) => {
+    browserHistory.push(`/move/${this.props.move.ID}`)
+  };
+  render() {
+    const {move} = this.props;
+    return (
+      <div style={{textAlign: 'center'}}>
+        <ListItem button onClick={this.handleClick}>
+          <MoveDragHandle/>
+          <ListItemText primary={move.name}/>
+        </ListItem>
+      </div>
+    );
+  }
+}
 
 const SortableList = SortableContainer(({positions, moves}) => {
   return (

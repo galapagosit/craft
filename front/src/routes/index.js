@@ -3,6 +3,7 @@ import CoreLayout from '../layouts/PageLayout/PageLayout'
 import LoginRoute from './Login'
 import SignupRoute from './Signup'
 import PositionRoute from './Position'
+import MoveRoute from './Move'
 import CounterRoute from './Counter'
 
 /*  Note: Instead of using JSX, we recommend using react-router
@@ -15,6 +16,7 @@ export const createRoutes = (store) => ({
     LoginRoute(store),
     SignupRoute(store),
     PositionRoute(store),
+    MoveRoute(store),
     CounterRoute(store)
   ]
 })

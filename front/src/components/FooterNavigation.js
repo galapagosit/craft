@@ -49,7 +49,7 @@ class FooterNavigation extends React.Component {
         browserHistory.push('/counter')
         break
       case 1:
-        browserHistory.push('/position')
+        browserHistory.push('/position/0')
         break
       default:
         console.log('no root');
