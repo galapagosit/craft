@@ -16,7 +16,7 @@ import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
 
 const styles = createStyleSheet((theme) => ({
   card: {
-    maxWidth: 400,
+    maxWidth: '90%',
     margin: '0 auto',
     marginTop: '1rem',
   },

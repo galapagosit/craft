@@ -10,6 +10,7 @@ import Dialog, {
 } from 'material-ui/Dialog';
 import AppBar from '../../../components/AppBar';
 import MoveCard from './MoveCard';
+import MoveStepper from './MoveStepper';
 
 
 const styleSheet = createStyleSheet((theme) => ({root: {}}));
@@ -21,6 +22,7 @@ class MoveView extends React.Component {
     const classes = this.props.classes;
     return (
       <div style={{margin: '0 auto'}}>
+        <MoveStepper />
         <MoveCard />
       </div>
     )
