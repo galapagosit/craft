@@ -9,6 +9,7 @@ import Dialog, {
   DialogTitle,
 } from 'material-ui/Dialog';
 import AppBar from '../../../components/AppBar';
+import MoveCard from './MoveCard';
 
 
 const styleSheet = createStyleSheet((theme) => ({root: {}}));
@@ -19,7 +20,8 @@ class MoveView extends React.Component {
   render() {
     const classes = this.props.classes;
     return (
-      <div>
+      <div style={{margin: '0 auto'}}>
+        <MoveCard />
       </div>
     )
   }
