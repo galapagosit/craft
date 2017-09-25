@@ -41,18 +41,8 @@ class DotsMobileStepper extends React.Component {
         position="static"
         activeStep={this.state.activeStep}
         className={classes.root}
-        nextButton={
-          <Button dense onClick={this.handleNext} disabled={this.state.activeStep === 5}>
-            Next
-            <KeyboardArrowRight />
-          </Button>
-        }
-        backButton={
-          <Button dense onClick={this.handleBack} disabled={this.state.activeStep === 0}>
-            <KeyboardArrowLeft />
-            Back
-          </Button>
-        }
+        onBack={this.handleBack}
+        onNext={this.handleNext}
       />
     );
   }
