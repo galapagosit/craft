@@ -8,12 +8,12 @@ WORKDIR /go/src/github.com/galapagosit/craft
 
 RUN go get ./
 RUN go build
+RUN go get github.com/pilu/fresh
 
 CMD if [ ${APP_ENV} = production ]; \
 	then \
 	craft; \
 	else \
-	go get github.com/pilu/fresh && \
 	fresh; \
 	fi
 

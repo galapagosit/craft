@@ -1,4 +1,5 @@
 ./craft
+tmp
 
 .DS_STORE
 *.log
