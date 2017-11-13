@@ -3,7 +3,7 @@ package handlers
 import "net/http"
 
 import (
-	"../middlewares"
+	"github.com/galapagosit/craft/middlewares"
 	"github.com/galapagosit/craft/models"
 	"github.com/labstack/echo"
 )

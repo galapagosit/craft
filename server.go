@@ -1,9 +1,9 @@
 package main
 
 import (
-	"./handlers"
-	"./middlewares"
-	"./models"
+	"github.com/galapagosit/craft/handlers"
+	"github.com/galapagosit/craft/middlewares"
+	"github.com/galapagosit/craft/models"
 	"fmt"
 	"github.com/go-playground/validator"
 	"github.com/jinzhu/gorm"

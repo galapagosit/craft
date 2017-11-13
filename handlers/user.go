@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"../middlewares"
+	"github.com/galapagosit/craft/middlewares"
 	"github.com/galapagosit/craft/models"
 	"github.com/ipfans/echo-session"
 	"github.com/labstack/echo"
